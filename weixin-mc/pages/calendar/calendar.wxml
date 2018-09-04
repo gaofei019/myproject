@@ -1,16 +1,28 @@
 <!--pages/calendar/calendar.wxml-->
 <view class="calendar-create-box">
-    <text>一句话心情</text>
-    <input class="input" type="text" placeholder='' placeholder-class="place-input" />
-    <text>出处／署名</text>
-    <input class="input" type="text" placeholder='' placeholder-class="place-input" />
-    <text>添加图片</text>
-    <view>
-     <button size="mini" bindtap="choose_img">添加图片</button>
+    <view wx:if="{{fshow}}">
+      <view wx:if="{{!bshow}}">
+        <text>一句话心情</text>
+        <input class="input" bindinput="changeEmInputVal" value="{{emval}}" type="text" placeholder='' placeholder-class="place-input" />
+        <text>出处／署名</text>
+        <input class="input" bindinput="changeNaInputVal" value="{{naval}}" type="text" placeholder='' placeholder-class="place-input" />
+      </view>
+        <text>添加图片</text>
+        <view>
+        <button size="mini" bindtap="choose_img">添加图片</button>
+        </view>
+        <view>
+          <image bindload="imageload" src="{{img_src}}" mode="aspecFill" />
+        </view>
+        <view style="position:absolute;z-index:100;bottom:25%;left:50%;" wx:if="{{bshow}}">
+          <button size="mini" bindtap="make_img">生成图片</button>
+        </view>
     </view>
-    <view>
-      <image bindload="imageload" src="{{img_src}}" mode="aspecFill" sty />
+    <view wx:if="{{!fshow}}">
+      <image src="{{b64}}" mode="aspecFill" style="min-width:10rpx;min-height:10rpx;background:#f00;" />
     </view>
+    <text>{{b64}}</text>
+    <view>高高高高高高</view>
     <!-- canvas.wxml -->
-    <canvas style="width:100%; height:100%;position:absolute;left:0;top:0;left:0;top:0;background:#ccc" canvas-id="firstCanvas" wx:if="{{bshow}}"></canvas>
+    <canvas style="width:100%; height:70%;position:absolute;left:0;top:0;left:0;top:0;background:#ccc" canvas-id="firstCanvas" wx:if="{{bshow}}"></canvas>
 </view>

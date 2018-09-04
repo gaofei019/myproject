@@ -1,5 +1,6 @@
 // pages/calendar/calendar.js
 var imageUtil = require('./imageUtil.js');
+var upng = require('./upng-js/UPNG.js');
 Page({
 
   /**
@@ -10,7 +11,21 @@ Page({
     msg:'',
     img_width:0,
     img_height:0,
-    bshow:false
+    bshow:false,
+    fshow:true,
+    b64:'',
+    emval:'',
+    naval:''
+  },
+  changeEmInputVal(ev) {
+    this.setData({
+      emval: ev.detail.value
+    });
+  },
+  changeNaInputVal(ev) {
+    this.setData({
+      naval: ev.detail.value
+    });
   },
   choose_img(){
         var self=this;
@@ -21,21 +36,69 @@ Page({
           success: function (res) {
             // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
             var tempFilePaths = res.tempFilePaths;
-            console.log(tempFilePaths);
+            //console.log(tempFilePaths);
             self.setData({
               img_src: tempFilePaths[0]
             });
           }
         })
   },
-  getBase64Image(img) {  
-      var canvas = wx.createCanvasContext('firstCanvas');    
-      var ctx = canvas.getContext("2d");  
-      ctx.drawImage(img, 0, 0, img.width, img.height);  
-      var ext = img.src.substring(img.src.lastIndexOf(".") + 1).toLowerCase();  
-      var dataURL = canvas.toDataURL("image/" + ext);  
-      return dataURL;
+  make_img(){
+      var self = this;
+      var img_width = this.data['img_width'],
+          img_height = this.data['img_height'];
+      var platform = wx.getSystemInfoSync().platform;
+      wx.canvasGetImageData({
+
+        canvasId: 'firstCanvas',                                              //参数，canvas标签的id
+
+        x: 0,                                                                      //起始位置，x坐标
+
+        y: 0,
+
+        width: img_width,
+
+        height: img_height,
+
+        success: function (res) {
+
+          //引入upng，将图片转化成utf-8格式
+
+          console.log(res);
+
+          if (platform === 'ios') {
+            // 兼容处理：ios获取的图片上下颠倒 
+            res = self.reverseImgData(res)
+          }
+          // 3. png编码
+          let pngData = upng.encode([res.data.buffer], res.width, res.height)
+          // 4. base64编码
+          let base64 = wx.arrayBufferToBase64(pngData)
+          console.log('data:image/png;base64,' + base64)
+          self.setData({
+            b64: 'data:image/png;base64,' + base64,
+            bshow: false,
+            fshow: false
+          });
+
+        }
+
+      })
   }, 
+  //ios图片处理 
+  reverseImgData(res) {
+    var w = res.width
+    var h = res.height
+    let con = 0
+    for (var i = 0; i < h / 2; i++) {
+      for (var j = 0; j < w * 4; j++) {
+        con = res.data[i * w * 4 + j]
+        res.data[i * w * 4 + j] = res.data[(h - i - 1) * w * 4 + j]
+        res.data[(h - i - 1) * w * 4 + j] = con
+      }
+    }
+    return res
+  },
   imageload(e){
     var imageSize = imageUtil.imageUtil(e);
     //获取图片的原始宽度和高度 
@@ -47,25 +110,17 @@ Page({
       img_height: imageSize.imageHeight
     });
     var img_width=this.data['img_width'],
-        img_height=this.data['img_height'];
+        img_height=this.data['img_height'],
+        em_text = this.data['emval'],
+        na_text = this.data['naval'];
     var ctx = wx.createCanvasContext('firstCanvas');
+    var platform = wx.getSystemInfoSync().platform;
     ctx.drawImage(this.data['img_src'], 0, 0, img_width, img_height);
-    ctx.setStrokeStyle("#00ff00")
-    ctx.setLineWidth(5)
-    ctx.rect(0, 0, 200, 200)
-    ctx.stroke()
-    ctx.setStrokeStyle("#ff0000")
-    ctx.setLineWidth(2)
-    ctx.moveTo(160, 100)
-    ctx.arc(100, 100, 60, 0, 2 * Math.PI, true)
-    ctx.moveTo(140, 100)
-    ctx.arc(100, 100, 40, 0, Math.PI, false)
-    ctx.moveTo(85, 80)
-    ctx.arc(80, 80, 5, 0, 2 * Math.PI, true)
-    ctx.moveTo(125, 80)
-    ctx.arc(120, 80, 5, 0, 2 * Math.PI, true)
-    ctx.stroke()
+    ctx.fillStyle = '#173b7b'
+    ctx.fillText(em_text, 15, 16) 
+    ctx.fillText(em_text, 15, 50)
     ctx.draw();
+    console.log(222);
     /*var arr = tempFilePaths[0].split('.');
     var len =arr.length;
     var ext = arr[len-1].toLowerCase();
