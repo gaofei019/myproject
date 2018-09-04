@@ -1,0 +1,4 @@
+<!--pages/news/news.wxml-->
+<text bindtap="change">我是新闻页{{msg}}</text>
+<button type="primary" bindtap="fnUserState">回来</button>
+<button type="primary" bindtap="fnUserState2">退出</button>

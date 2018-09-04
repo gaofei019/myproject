@@ -1,0 +1,17 @@
+/* pages/calendar/calendar.wxss */
+.show {
+   display: block;
+}
+.hidden {
+ display: none;
+}
+.input{
+  border:1rpx solid #ccc;
+  padding:5rpx;
+}
+.place-input{
+  color:#fcc;
+}
+.calendar-create-box{
+  padding:15rpx 10rpx;
+}
