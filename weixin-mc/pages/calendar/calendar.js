@@ -1,6 +1,7 @@
 // pages/calendar/calendar.js
 var imageUtil = require('./imageUtil.js');
 var upng = require('./upng-js/UPNG.js');
+const util = require('../../utils/util.js')
 Page({
 
   /**
@@ -15,7 +16,10 @@ Page({
     fshow:true,
     b64:'',
     emval:'',
-    naval:''
+    naval:'',
+    curdate:'',
+    key:'88e70b9ee9e20e610b78ca9eedb378a0',
+    dateapi: 'https://v.juhe.cn/calendar/day'
   },
   changeEmInputVal(ev) {
     this.setData({
@@ -120,7 +124,7 @@ Page({
     ctx.fillText(em_text, 15, 16) 
     ctx.fillText(em_text, 15, 50)
     ctx.draw();
-    console.log(222);
+    //console.log(222);
     /*var arr = tempFilePaths[0].split('.');
     var len =arr.length;
     var ext = arr[len-1].toLowerCase();
@@ -142,7 +146,22 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-  
+    var self = this;
+    var curdate = new Date(Date.now()).toLocaleDateString().replace(/\//g, '-');
+    if(!self.data.curdate || self.data.curdate !== curdate){
+      self.data.curdate = curdate;
+      wx.request({
+        url: self.data.dateapi, 
+        data: {
+          date: curdate,
+          key: self.data.key
+        },
+        dataType:'json',
+        success: function (res) {
+          console.log(res)
+        }
+      })
+    }
   },
 
   /**
