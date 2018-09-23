@@ -19,7 +19,10 @@ Page({
     naval:'',
     curdate:'',
     key:'88e70b9ee9e20e610b78ca9eedb378a0',
-    dateapi: 'https://v.juhe.cn/calendar/day'
+    dateapi: 'https://v.juhe.cn/calendar/day',
+    year:'',
+    month:'',
+    day:''
   },
   changeEmInputVal(ev) {
     this.setData({
@@ -116,13 +119,18 @@ Page({
     var img_width=this.data['img_width'],
         img_height=this.data['img_height'],
         em_text = this.data['emval'],
-        na_text = this.data['naval'];
+        na_text = this.data['naval'],
+        year_text = this.data['year'],month_text = this.data['month'],day_text=this.data['day'];
     var ctx = wx.createCanvasContext('firstCanvas');
     var platform = wx.getSystemInfoSync().platform;
     ctx.drawImage(this.data['img_src'], 0, 0, img_width, img_height);
     ctx.fillStyle = '#173b7b'
-    ctx.fillText(em_text, 15, 16) 
-    ctx.fillText(em_text, 15, 50)
+    ctx.setFontSize(50)
+    ctx.fillText(em_text, 15, 100) 
+    ctx.fillText(em_text, 15, 150)
+    ctx.fillText(year_text, 15, 200)
+    ctx.fillText(month_text, 15, 350)
+    ctx.fillText(day_text, 15, 450)
     ctx.draw();
     //console.log(222);
     /*var arr = tempFilePaths[0].split('.');
@@ -148,6 +156,7 @@ Page({
   onReady: function () {
     var self = this;
     var curdate = new Date(Date.now()).toLocaleDateString().replace(/\//g, '-');
+    var date_arr = [];
     if(!self.data.curdate || self.data.curdate !== curdate){
       self.data.curdate = curdate;
       wx.request({
@@ -158,7 +167,10 @@ Page({
         },
         dataType:'json',
         success: function (res) {
-          console.log(res)
+          date_arr = res.data.result.data.date.split('-');
+          self.data.year = date_arr[0];
+          self.data.month = date_arr[1];
+          self.data.day = date_arr[2];
         }
       })
     }
