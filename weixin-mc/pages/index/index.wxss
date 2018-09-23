@@ -35,8 +35,13 @@
 		justify-content:center;
 		padding-bottom:100rpx;
     padding-top:50rpx;
-
 	}
+  .welcome image {
+		width:340rpx;height:100rpx;
+    display:block;margin:0 auto;
+    margin-bottom:10px;
+ 	}
+
 	#button {
 		text-align:center;
 		display: block;

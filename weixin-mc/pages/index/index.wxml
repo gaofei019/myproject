@@ -13,8 +13,7 @@
 <view class="box">
 	<view class="mon">MAY 2018</view>
 	<view class="date">07</view>
-	<view class="welcome"><!--<image src="image/welcome.png" width="75%">	</image>-->
-		记录不一样的生活，记录多彩生活！</view>
+	<view class="welcome"><image src="http://t1.aixinxi.net/o_1co2ulst056q1u81jft1viogb1a.png-w.jpg" >	</image>记录不一样的生活，记录多彩生活！</view>
 </view>
 	<view id="button"><navigator url="../calendar/calendar"><image src="../image/indexbt.png" ></image></navigator></view>
 <navigator url="../calendar/calendar">创造自己的日历</navigator>
