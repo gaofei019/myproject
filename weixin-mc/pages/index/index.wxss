@@ -1,9 +1,73 @@
 /**index.wxss**/
+
+.container
+{
+  	background-color:#fcc;
+    background-image:url(../image/indexbg.png);/*需要用网络路径*/
+    background-image:url(http://img.juweixin.com/article/2016/1104/t_7994f3e6c59a28fa4e7df93ff635f0f0.jpg);
+    background-image:url(http://t1.aixinxi.net/o_1cn3aq7kg1fue1ccgnpehbp1j5qa.png);
+    
+		background-repeat: no-repeat;
+		background-position:center;
+		background-size: cover;
+    padding-top:50rpx;
+    }
+
+.box{
+		text-align: center;
+		color:#fff;
+    height: 600rpx;
+	}
+
+	.mon {
+    padding-top:80rpx;
+		font-size:60rpx;
+		text-align: center;
+
+	}
+	.date {
+		text-align: center;
+			font-size:120rpx;
+      padding-top:40rpx;
+	}
+	.welcome {
+		text-align: center;
+		justify-content:center;
+		padding-bottom:100rpx;
+    padding-top:50rpx;
+
+	}
+	#button {
+		text-align:center;
+		display: block;
+	}
+
+#button image{
+		width:300rpx;height:95rpx;
+	}
+  
+  	#nav-box{
+		display: block;
+ 		position: absolute;
+		bottom:0;
+		width: 375px;
+	}
+	#nav-box view {
+		background:white;
+		font-size:1em;
+		text-align: center;
+		color:black;
+		border-bottom:1px solid #e5e5e9;
+		line-height:56px;
+		width:375px;
+	}
+
 .userinfo {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+  height:250rpx;
+  }
 
 .userinfo-avatar {
   width: 128rpx;
@@ -13,7 +77,7 @@
 }
 
 .userinfo-nickname {
-  color: #aaa;
+  color: #fff;
 }
 
 .usermotto {
