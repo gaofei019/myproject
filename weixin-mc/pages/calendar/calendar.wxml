@@ -7,6 +7,7 @@
         <text>出处／署名</text>
         <input class="input" bindinput="changeNaInputVal" value="{{naval}}" type="text" placeholder='' placeholder-class="place-input" />
       </view>
+        <text>{{curdate}}</text>
         <text>添加图片</text>
         <view>
         <button size="mini" bindtap="choose_img">添加图片</button>
@@ -20,9 +21,8 @@
     </view>
     <view wx:if="{{!fshow}}">
       <image src="{{b64}}" mode="aspecFill" style="min-width:10rpx;min-height:10rpx;background:#f00;" />
+      <button size="mini" bindtap="save_img">下载图片</button>
     </view>
-    <text>{{b64}}</text>
-    <view>高高高高高高</view>
     <!-- canvas.wxml -->
-    <canvas style="width:100%; height:70%;position:absolute;left:0;top:0;left:0;top:0;background:#ccc" canvas-id="firstCanvas" wx:if="{{bshow}}"></canvas>
+    <canvas style="width:100%; height:70%;position:absolute;left:0;top:0;left:0;top:0;background:#ccc;display:{{bshow?'block':'none'}}" id="firstCanvas" canvas-id="firstCanvas"></canvas>
 </view>

@@ -22,7 +22,10 @@ Page({
     dateapi: 'https://v.juhe.cn/calendar/day',
     year:'',
     month:'',
-    day:''
+    day:'',
+    canvas_width:0,
+    winwidth: wx.getSystemInfoSync().windowWidth,
+    img_file:''
   },
   changeEmInputVal(ev) {
     this.setData({
@@ -33,6 +36,30 @@ Page({
     this.setData({
       naval: ev.detail.value
     });
+  },
+  save_img(){
+    var self = this;
+    //console.log(self.data['b64']);
+    wx.downloadFile({
+      url:self.data['img_file'],
+      success:function(res){
+        wx.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success: function (res) {
+              console.log(res)
+          },
+          fail: function (res) { 
+             console.log(res)
+          },
+          complete: function (res) {
+            console.log(res)
+           },
+        })
+      },
+      fail:function(res){
+        console.log('fail')
+      }
+    })
   },
   choose_img(){
         var self=this;
@@ -54,6 +81,7 @@ Page({
       var self = this;
       var img_width = this.data['img_width'],
           img_height = this.data['img_height'];
+      //console.log(img_width);
       var platform = wx.getSystemInfoSync().platform;
       wx.canvasGetImageData({
 
@@ -71,7 +99,7 @@ Page({
 
           //引入upng，将图片转化成utf-8格式
 
-          console.log(res);
+          //console.log(res);
 
           if (platform === 'ios') {
             // 兼容处理：ios获取的图片上下颠倒 
@@ -81,7 +109,7 @@ Page({
           let pngData = upng.encode([res.data.buffer], res.width, res.height)
           // 4. base64编码
           let base64 = wx.arrayBufferToBase64(pngData)
-          console.log('data:image/png;base64,' + base64)
+          //console.log('data:image/png;base64,' + base64)
           self.setData({
             b64: 'data:image/png;base64,' + base64,
             bshow: false,
@@ -111,6 +139,7 @@ Page({
     //获取图片的原始宽度和高度 
     let originalWidth = e.detail.width;
     let originalHeight = e.detail.height;
+    let self = this;
     //console.log(originalWidth);
     this.setData({
       img_width: imageSize.imageWidth,
@@ -120,18 +149,37 @@ Page({
         img_height=this.data['img_height'],
         em_text = this.data['emval'],
         na_text = this.data['naval'],
-        year_text = this.data['year'],month_text = this.data['month'],day_text=this.data['day'];
+      year_text = this.data['year'], month_text = this.data['month'], day_text = this.data['day'].length > 1 ? this.data['day']:'0'+this.data['day'],winwidth = this.data['winwidth'],
+        yn_text = month_text+' '+year_text;
     var ctx = wx.createCanvasContext('firstCanvas');
     var platform = wx.getSystemInfoSync().platform;
     ctx.drawImage(this.data['img_src'], 0, 0, img_width, img_height);
     ctx.fillStyle = '#173b7b'
-    ctx.setFontSize(50)
-    ctx.fillText(em_text, 15, 100) 
-    ctx.fillText(em_text, 15, 150)
-    ctx.fillText(year_text, 15, 200)
-    ctx.fillText(month_text, 15, 350)
-    ctx.fillText(day_text, 15, 450)
-    ctx.draw();
+    ctx.setFontSize(60)
+    ctx.fillText(yn_text, (winwidth - ctx.measureText(yn_text).width) / 2, 100)
+    ctx.setFontSize(120)
+    ctx.fillText(day_text, (winwidth - ctx.measureText(day_text).width) / 2, 250)
+    ctx.setFontSize(60)
+    ctx.fillText(em_text, (winwidth - ctx.measureText(em_text).width) / 2, 300)
+    ctx.fillText(na_text, (winwidth - ctx.measureText(na_text).width) / 2, 350)
+    
+    ctx.draw(false,function(){  
+      wx.canvasToTempFilePath({
+        x: 100,
+        y: 200,
+        width: 50,
+        height: 50,
+        destWidth: 100,
+        destHeight: 100,
+        canvasId: 'firstCanvas',
+        success(res) {
+          console.log(res.tempFilePath)
+          self.setData({
+            img_file: res.tempFilePath
+          });
+        }
+      })
+    });
     //console.log(222);
     /*var arr = tempFilePaths[0].split('.');
     var len =arr.length;
@@ -155,7 +203,11 @@ Page({
    */
   onReady: function () {
     var self = this;
-    var curdate = new Date(Date.now()).toLocaleDateString().replace(/\//g, '-');
+    var curdate = new Date();
+    curdate = curdate.getFullYear()+'-'+(curdate.getMonth()+1)+'-'+curdate.getDate();
+    /*self.setData({
+      curdate: curdate
+    });*/
     var date_arr = [];
     if(!self.data.curdate || self.data.curdate !== curdate){
       self.data.curdate = curdate;
@@ -180,7 +232,16 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    /*console.log(wx.getSystemInfoSync().windowWidth);
+    setTimeout(function () {
+      var query = wx.createSelectorQuery(),self=this;
+    
+      query.select('#firstCanvas').boundingClientRect(function (rect) {
+        // console.log(rect.width)
+        console.log(rect)
+      })
+      query.exec()
+    },500)*/
   },
 
   /**

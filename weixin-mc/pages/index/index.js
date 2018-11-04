@@ -16,7 +16,8 @@ Page({
     msgData: [],
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    date:''
   },
   changeInputVal(ev){
     this.setData({
@@ -75,6 +76,10 @@ Page({
   },
   onLoad: function () {
     this.videoContext = wx.createVideoContext('myVideo');
+    var curdate = new Date(Date.now());
+    this.setData({
+      date:curdate
+    });
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

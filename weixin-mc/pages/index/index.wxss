@@ -3,7 +3,7 @@
 .container
 {
   	background-color:#fcc;
-    background-image:url(../image/indexbg.png);/*需要用网络路径*/
+    /*background-image:url(../image/indexbg.png);*//*需要用网络路径*/
     background-image:url(http://img.juweixin.com/article/2016/1104/t_7994f3e6c59a28fa4e7df93ff635f0f0.jpg);
     background-image:url(http://t1.aixinxi.net/o_1cn3aq7kg1fue1ccgnpehbp1j5qa.png);
     

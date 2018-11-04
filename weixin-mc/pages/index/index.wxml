@@ -11,12 +11,16 @@
    </view>
 
 <view class="box">
-	<view class="mon">MAY 2018</view>
+	<view class="mon">MAY 2018{{date}}</view>
 	<view class="date">07</view>
-	<view class="welcome"><image src="http://t1.aixinxi.net/o_1co2ulst056q1u81jft1viogb1a.png-w.jpg" >	</image>记录不一样的生活，记录多彩生活！</view>
+	<view class="welcome">
+    <navigator url="../calendar/calendar">
+    <image src="http://t1.aixinxi.net/o_1co2ulst056q1u81jft1viogb1a.png-w.jpg" >	</image>记录不一样的生活，记录多彩生活！
+    </navigator>
+  </view>
 </view>
-	<view id="button"><navigator url="../calendar/calendar"><image src="../image/indexbt.png" ></image></navigator></view>
-<navigator url="../calendar/calendar">创造自己的日历</navigator>
+	<!--<view id="button"><navigator url="../calendar/calendar"><image src="../image/indexbt.png" ></image></navigator></view>-->
+<!--<navigator url="../calendar/calendar">创造自己的日历</navigator>-->
  <!-- <view class="listview">
       <view class="li" wx:for="{{arr}}" wx:key="{{index}}">
         {{item}}
@@ -32,7 +36,7 @@
 
 
 
- <view class="msg-box">
+ <view class="msg-box" style="display:none">
       <!--留言-->
       <view class="send-box">
         <input bindinput="changeInputVal" value="{{inputVal}}" class="input" type="text" placeholder='请留言...' placeholder-class="place-input" />
